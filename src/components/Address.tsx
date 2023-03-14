@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Col, DatePicker, Form, Input, Row, Select} from "antd";
 import axios from "axios";
+import AddresList from "./AddressListList";
 
 interface AddressProps {
 
@@ -8,10 +9,12 @@ interface AddressProps {
 
 
 interface City {
+    id: string;
     value: number;
     cityName: string;
 }
 interface CityOption {
+    id: string;
     value: number;
     label: number;
     cityName: string;
@@ -28,7 +31,7 @@ function Address(props: AddressProps) {
             ({data}) => {
                 const cities = data._embedded.city
                 setCityOptions(cities.map((city:any) => {
-                    return {value: city.zipCode, label: city.zipCode, cityName: city.cityName};
+                    return {value: city.zipCode, label: city.zipCode, cityName: city.cityName, id: city["_links"].self.href };
                 }))
                 setLoading(false);
             }
@@ -42,7 +45,11 @@ function Address(props: AddressProps) {
     const [form] = Form.useForm();
     const savePerson = (values: any) => {
         console.log(values);
-        axios.post("http://localhost:8080/address", values).then(
+        const data =  {
+            ...values,
+            city: city?.id
+        }
+        axios.post("http://localhost:8080/address", data).then(
             (response) => {
                 console.log(response);
             }
@@ -98,11 +105,12 @@ function Address(props: AddressProps) {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Button type="primary" htmlType="submit">
+                    <Button className={"button-margin"} type="primary" htmlType="submit">
                         Speichern
                     </Button>
                 </Form>
             </div>
+            <AddresList></AddresList>
         </>
     );
 }
