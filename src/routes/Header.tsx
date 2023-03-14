@@ -1,7 +1,8 @@
+import "./Header.css";
 export default function Header() {
   return (
     <>
-      <div id="sidebar">
+      <div id="header" className={"headerContainer"}>
         <h1>Personen Verwaltung</h1>
         <nav>
           <ul>

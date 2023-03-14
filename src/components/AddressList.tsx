@@ -29,7 +29,7 @@ const columns: ColumnsType<PersonInterface> = [
   },
 ];
 
-function AddresList(props: AddressListProps) {
+function AddressList(props: AddressListProps) {
   const [address, setAddress] = useState();
 
   useEffect(() => {
@@ -52,4 +52,4 @@ function AddresList(props: AddressListProps) {
   );
 }
 
-export default AddresList;
+export default AddressList;
