@@ -3,6 +3,7 @@ import axios from "axios";
 import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import Person, { PersonInterface } from "./PersonInterface";
+import dayjs from "dayjs";
 
 interface PersonListProps {}
 
@@ -16,6 +17,17 @@ const columns: ColumnsType<PersonInterface> = [
     title: "Nachname",
     dataIndex: "lastName",
     key: "firstName",
+  },
+  {
+    title: "Heimatort",
+    dataIndex: "homeTown",
+    key: "homeTown",
+  },
+  {
+    title: "Geburtstag",
+    dataIndex: "birthDate",
+    key: "birthDate",
+    render: (date) => dayjs().format("DD.MM.YYYY")
   },
 ];
 
