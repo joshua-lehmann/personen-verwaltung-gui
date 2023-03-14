@@ -68,7 +68,8 @@ function Address(props: AddressProps) {
 
     }
 
-    return (<>
+    return (
+        <>
             <div>
                 <Form onFinish={savePerson}
                       form={form}
