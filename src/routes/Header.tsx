@@ -17,6 +17,9 @@ export default function Header() {
             <li>
               <a href={`/person-list`}>Person List</a>
             </li>
+            <li>
+              <a href={`/city-list`}>City List</a>
+            </li>
           </ul>
         </nav>
       </div>

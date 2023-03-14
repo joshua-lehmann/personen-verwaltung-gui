@@ -9,6 +9,7 @@ import City from "./components/City";
 import Person from "./components/PersonInterface";
 import Address from "./components/Address";
 import PersonList from "./components/PersonList";
+import CityList from "./components/CityList";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/address",
     element: <Address />,
+  },
+  {
+    path: "/city-list",
+    element: <CityList />,
   },
 ]);
 
