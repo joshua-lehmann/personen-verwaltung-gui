@@ -1,8 +1,6 @@
-import {rules} from '@typescript-eslint/eslint-plugin';
 import {Button, Col, Form, Input, InputNumber, notification, Row} from 'antd';
 import {RuleObject} from 'antd/es/form';
 import axios from 'axios';
-import {ValidatorRule} from 'rc-field-form/lib/interface';
 import React from 'react';
 import {CityForm} from './CityInterface';
 
