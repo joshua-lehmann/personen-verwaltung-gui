@@ -37,11 +37,14 @@ function CityList({cities, setReload}: CityListProps) {
       title: 'PLZ',
       dataIndex: 'zipCode',
       key: 'zipCode',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.zipCode - b.zipCode,
     },
     {
       title: 'Stadt',
       dataIndex: 'cityName',
       key: 'cityName',
+      sorter: (a, b) => a.cityName.localeCompare(b.cityName,
     },
     {
       title: 'Delete',

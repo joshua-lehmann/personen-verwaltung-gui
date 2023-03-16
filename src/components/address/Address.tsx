@@ -1,14 +1,16 @@
-import {Button, Col, Form, Input, Row, Select} from 'antd';
+import {CheckOutlined, CloseOutlined} from '@ant-design/icons';
+import {Button, Col, DatePicker, Form, Input, Row, Select, Switch} from 'antd';
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-
-interface AddressProps {}
+import './address.css';
+import {IAddressForm} from './AddressInterface';
 
 interface City {
   id: string;
   value: number;
   cityName: string;
 }
+
 interface CityOption {
   id: string;
   value: number;
@@ -16,17 +18,22 @@ interface CityOption {
   cityName: string;
 }
 
+const dateFormat = 'DD.MM.YYYY';
+
+interface AddressProps {}
+
 function Address(props: AddressProps) {
   const [city, setCity] = useState<City>();
   const [loading, setLoading] = useState(true);
   const [cityOptions, setCityOptions] = useState<Array<CityOption>>();
+  const [form] = Form.useForm();
   console.log(cityOptions);
 
   useEffect(() => {
     axios
       .get('http://localhost:8080/cities')
       .then(({data}) => {
-        const cities = data._embedded.city;
+        const cities = data._embedded.cities;
         setCityOptions(
           cities.map((city: any) => {
             return {
@@ -44,8 +51,7 @@ function Address(props: AddressProps) {
       });
   }, []);
 
-  const [form] = Form.useForm();
-  const savePerson = (values: any) => {
+  const saveAddress = (values: any) => {
     console.log(values);
     const data = {
       ...values,
@@ -62,7 +68,6 @@ function Address(props: AddressProps) {
   };
 
   const onZipCodeChange = (value: any) => {
-    console.log(value);
     if (cityOptions) {
       const newCity = cityOptions.find((city) => city.value === value);
       if (newCity) {
@@ -76,8 +81,8 @@ function Address(props: AddressProps) {
 
   return (
     <>
-      <div>
-        <Form onFinish={savePerson} form={form} labelCol={{span: 8}} wrapperCol={{span: 16}}>
+      <div className={'addressForm'}>
+        <Form<IAddressForm> onFinish={saveAddress} form={form} labelCol={{span: 8}} wrapperCol={{span: 16}}>
           <Row>
             <Col span={10}>
               <Form.Item name={'street'} label={'Strasse'}>
@@ -99,6 +104,30 @@ function Address(props: AddressProps) {
             <Col span={10} offset={2}>
               <Form.Item name={'city'} label={'Ortschaft'}>
                 <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={10}>
+              <Form.Item name={'validFrom'} label={'Gültig von'}>
+                <DatePicker format={dateFormat} />
+              </Form.Item>
+            </Col>
+            <Col span={10} offset={2}>
+              <Form.Item name={'validTo'} label={'Gütlig bis'}>
+                <DatePicker format={dateFormat} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={10}>
+              <Form.Item
+                name={'isCurrentAddress'}
+                label={'Aktuelle Adresse'}
+                valuePropName={'checked'}
+                className={'switch'}
+              >
+                <Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} />
               </Form.Item>
             </Col>
           </Row>
