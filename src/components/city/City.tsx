@@ -1,29 +1,46 @@
-import {Button, Col, Form, Input, InputNumber, Row} from 'antd';
+import {rules} from '@typescript-eslint/eslint-plugin';
+import {Button, Col, Form, Input, InputNumber, notification, Row} from 'antd';
+import {RuleObject} from 'antd/es/form';
 import axios from 'axios';
+import {ValidatorRule} from 'rc-field-form/lib/interface';
 import React from 'react';
+import {CityForm} from './CityInterface';
+
+const zipCodeValidator = (rule: RuleObject, value: number) => {
+  if (value && value.toString().length !== 4) {
+    return Promise.reject('PLZ muss 4 Stellen haben!');
+  }
+  return Promise.resolve();
+};
 
 interface CityProps {
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function City({setReload}: CityProps) {
-  const [form] = Form.useForm();
-  const saveCity = (values: any) => {
+  const [form] = Form.useForm<CityForm>();
+  const [notificationApi, contextHolder] = notification.useNotification();
+  const saveCity = (city: CityForm) => {
     axios
-      .post('http://localhost:8080/cities', values)
+      .post('http://localhost:8080/cities', city)
       .then((response) => {
         setReload(true);
         form.resetFields();
       })
       .catch((error) => {
-        alert(error);
+        notificationApi.error({
+          message: 'Error when trying to add new city',
+          description: error.response.data.cause.cause.message,
+          duration: 8,
+        });
       });
   };
 
   return (
     <>
       <div>
-        <Form onFinish={saveCity} form={form}>
+        {contextHolder}
+        <Form<CityForm> onFinish={saveCity} form={form}>
           <Row>
             <Col span={8}>
               <Form.Item
@@ -34,15 +51,7 @@ function City({setReload}: CityProps) {
                     required: true,
                     message: 'Bitte PLZ eingeben!',
                   },
-                  {
-                    type: 'number',
-                    message: 'Die Eingabe ist keine gültige Zahl!',
-                  },
-                  {
-                    type: 'number',
-                    pattern: new RegExp('^[0-9]{4}$'),
-                    message: 'PLZ muss 4 Stellen haben!',
-                  },
+                  {validator: (rule, value) => zipCodeValidator(rule, value)},
                 ]}
               >
                 <InputNumber style={{width: '100%'}} controls={false} />
