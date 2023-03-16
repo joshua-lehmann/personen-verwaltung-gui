@@ -1,26 +1,23 @@
-import { useState } from "react";
-import "./App.css";
-import Person from "./components/PersonInterface";
-import City from "./components/City";
-import Address from "./components/Address";
-import { Divider } from "antd";
-import PersonList from "./components/PersonList";
-import Header from "./routes/Header";
-import { Route, Routes } from "react-router-dom";
-import CityList from "./components/CityList";
-import AddressList from "./components/AddressList";
-import CityPage from "./components/CityPage";
+import React from 'react';
+import {Route, Routes} from 'react-router-dom';
+import './App.css';
+import AddressList from './components/address/AddressList';
+import AddressPage from './components/address/AddressPage';
+import CityPage from './components/city/CityPage';
+import Person from './components/person/PersonInterface';
+import PersonList from './components/person/PersonList';
+import Header from './routes/Header';
 
 function App() {
   return (
-    <div className="App">
+    <div className={'App'}>
       <Routes>
-        <Route path="/" element={<Header />}>
-          <Route path="city" element={<CityPage />} />
-          <Route path="address" element={<Address />} />
-          <Route path="address-list" element={<AddressList />} />
-          <Route path="person" element={<Person />} />
-          <Route path="person-list" element={<PersonList />} />
+        <Route path={'/'} element={<Header />}>
+          <Route path={'city'} element={<CityPage />} />
+          <Route path={'address'} element={<AddressPage />} />
+          <Route path={'address-list'} element={<AddressList />} />
+          <Route path={'person'} element={<Person />} />
+          <Route path={'person-list'} element={<PersonList />} />
         </Route>
       </Routes>
     </div>

@@ -1,30 +1,41 @@
-import "./Header.css";
+import {ContactsOutlined, HomeOutlined, TeamOutlined, UserOutlined} from '@ant-design/icons';
+import {Menu, MenuProps} from 'antd';
+import React from 'react';
+import {Link, Outlet} from 'react-router-dom';
+import './Header.css';
+
+const items: MenuProps['items'] = [
+  {
+    key: 'city',
+    icon: <HomeOutlined />,
+    label: <Link to={'/city'}>City</Link>,
+  },
+  {
+    key: 'address',
+    icon: <ContactsOutlined />,
+    label: <Link to={'/address'}>Address</Link>,
+  },
+  {
+    key: 'person',
+    icon: <UserOutlined />,
+    label: <Link to={'/person'}>Person</Link>,
+  },
+  {
+    key: 'person-list',
+    icon: <TeamOutlined />,
+    label: <Link to={'/person-list'}>Person List</Link>,
+  },
+];
 export default function Header() {
   return (
     <>
-      <div id="header" className={"headerContainer"}>
+      <div className={'navigation'}>
         <h1>Personen Verwaltung</h1>
-        <nav>
-          <ul>
-            <li>
-              <a href={`/city`}>City</a>
-            </li>
-            <li>
-              <a href={`/address`}>Address</a>
-            </li>
-            <li>
-              <a href={`/person`}>Person</a>
-            </li>
-            <li>
-              <a href={`/person-list`}>Person List</a>
-            </li>
-            <li>
-              <a href={`/city-list`}>City List</a>
-            </li>
-          </ul>
-        </nav>
+        <Menu mode={'horizontal'} items={items} />
       </div>
-      <div id="detail"></div>
+      <div id={'page'}>
+        <Outlet />
+      </div>
     </>
   );
 }

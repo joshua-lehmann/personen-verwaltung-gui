@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import City from "./City";
-import CityList, { CityInterface } from "./CityList";
-import axios from "axios";
-import { Spin } from "antd";
+import {Spin} from 'antd';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import City from './City';
+import CityList, {CityInterface} from './CityList';
 
 interface CityPageProps {}
 
 function CityPage(props: CityPageProps) {
   const [cities, setCities] = useState<Array<CityInterface>>();
-  const [reload, setReload] = useState(false);
+  const [reload, setReload] = useState(true);
 
   useEffect(() => {
     if (reload) {
       axios
-        .get("http://localhost:8080/city")
-        .then(({ data }) => {
+        .get('http://localhost:8080/cities')
+        .then(({data}) => {
           setCities(
-            data._embedded.city.map((city: any) => {
+            data._embedded.cities.map((city: any) => {
               return {
                 zipCode: city.zipCode,
                 cityName: city.cityName,
@@ -34,12 +34,8 @@ function CityPage(props: CityPageProps) {
   return (
     <>
       <div>
-        <City setReload={setReload}></City>
-        {cities && cities.length > 0 && reload == false ? (
-          <CityList cities={cities} setReload={setReload}></CityList>
-        ) : (
-          <Spin />
-        )}
+        <City setReload={setReload} />
+        {!reload ? <CityList cities={cities} setReload={setReload} /> : <Spin />}
       </div>
     </>
   );
