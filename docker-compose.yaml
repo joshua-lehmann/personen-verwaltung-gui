@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  personen-verwaltung-gui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: react-app
+    container_name: personen-verwaltung-gui
+    ports:
+      - "8081:80"
+    environment:
+      - NODE_ENV=production

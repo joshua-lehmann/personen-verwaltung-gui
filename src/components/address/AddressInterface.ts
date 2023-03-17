@@ -6,6 +6,7 @@ export interface IAddress {
   validFrom: Dayjs;
   validTo: Dayjs;
   isCurrentAddress: boolean;
+  link: string;
 }
 
 export interface IAddressForm {

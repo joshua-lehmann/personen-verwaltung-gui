@@ -1,6 +1,7 @@
 import {CheckOutlined, CloseOutlined} from '@ant-design/icons';
 import {Button, Col, DatePicker, Form, Input, Row, Select, Switch} from 'antd';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import './address.css';
 import {IAddressForm} from './AddressInterface';
@@ -20,14 +21,14 @@ interface CityOption {
 
 const dateFormat = 'DD.MM.YYYY';
 
-interface AddressProps {}
+interface AddressProps {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function Address(props: AddressProps) {
+function Address({setLoading}: AddressProps) {
   const [city, setCity] = useState<City>();
-  const [loading, setLoading] = useState(true);
   const [cityOptions, setCityOptions] = useState<Array<CityOption>>();
   const [form] = Form.useForm();
-  console.log(cityOptions);
 
   useEffect(() => {
     axios
@@ -44,7 +45,6 @@ function Address(props: AddressProps) {
             };
           })
         );
-        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -59,8 +59,8 @@ function Address(props: AddressProps) {
     };
     axios
       .post('http://localhost:8080/addresses', data)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
+        setLoading(true);
       })
       .catch((error) => {
         console.log(error);
@@ -82,39 +82,46 @@ function Address(props: AddressProps) {
   return (
     <>
       <div className={'addressForm'}>
-        <Form<IAddressForm> onFinish={saveAddress} form={form} labelCol={{span: 8}} wrapperCol={{span: 16}}>
+        <Form<IAddressForm>
+          onFinish={saveAddress}
+          form={form}
+          labelCol={{span: 8}}
+          wrapperCol={{span: 16}}
+          validateMessages={{required: 'Bitte ${label} eingeben!'}}
+          initialValues={{validFrom: dayjs().startOf('day')}}
+        >
           <Row>
             <Col span={10}>
-              <Form.Item name={'street'} label={'Strasse'}>
+              <Form.Item name={'street'} label={'Strasse'} rules={[{required: true}]}>
                 <Input />
               </Form.Item>
             </Col>
             <Col span={10} offset={2}>
-              <Form.Item name={'houseNumber'} label={'Nr.'}>
+              <Form.Item name={'houseNumber'} label={'Nr.'} rules={[{required: true}]}>
                 <Input />
               </Form.Item>
             </Col>
           </Row>
           <Row>
             <Col span={10}>
-              <Form.Item name={'zipCode'} label={'PLZ'}>
-                <Select loading={loading} style={{width: '100%'}} onChange={onZipCodeChange} options={cityOptions} />
+              <Form.Item name={'zipCode'} label={'PLZ'} rules={[{required: true}]}>
+                <Select style={{width: '100%'}} onChange={onZipCodeChange} options={cityOptions} showSearch={true} />
               </Form.Item>
             </Col>
             <Col span={10} offset={2}>
-              <Form.Item name={'city'} label={'Ortschaft'}>
+              <Form.Item name={'city'} label={'Ortschaft'} rules={[{required: true}]}>
                 <Input />
               </Form.Item>
             </Col>
           </Row>
           <Row>
             <Col span={10}>
-              <Form.Item name={'validFrom'} label={'Gültig von'}>
+              <Form.Item name={'validFrom'} label={'Gültig von'} rules={[{required: true}]}>
                 <DatePicker format={dateFormat} />
               </Form.Item>
             </Col>
             <Col span={10} offset={2}>
-              <Form.Item name={'validTo'} label={'Gütlig bis'}>
+              <Form.Item name={'validTo'} label={'Gütlig bis'} rules={[{required: true}]}>
                 <DatePicker format={dateFormat} />
               </Form.Item>
             </Col>

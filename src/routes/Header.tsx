@@ -31,7 +31,7 @@ export default function Header() {
     <>
       <div className={'navigation'}>
         <h1>Personen Verwaltung</h1>
-        <Menu mode={'inline'} items={items} />
+        <Menu mode={'horizontal'} items={items} />
       </div>
       <div id={'page'}>
         <Outlet />
