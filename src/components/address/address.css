@@ -1,7 +1,7 @@
 .addressForm .ant-picker {
-    width: 100%;
+  width: 100%;
 }
 
 .switch .ant-form-item-control-input-content {
-    flex: inherit;
+  flex: inherit;
 }

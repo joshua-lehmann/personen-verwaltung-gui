@@ -139,7 +139,7 @@ function Address({setLoading}: AddressProps) {
             </Col>
           </Row>
           <Button className={'button-margin'} type={'primary'} htmlType={'submit'}>
-            Speichern
+            Hinzufügen
           </Button>
         </Form>
       </div>

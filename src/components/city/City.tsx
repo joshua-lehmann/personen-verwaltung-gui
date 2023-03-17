@@ -71,7 +71,7 @@ function City({setReload}: CityProps) {
             </Col>
             <Col span={2} offset={2}>
               <Button type={'primary'} htmlType={'submit'}>
-                Speichern
+                Hinzufügen
               </Button>
             </Col>
           </Row>

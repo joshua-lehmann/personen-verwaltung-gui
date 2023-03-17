@@ -7,8 +7,7 @@ import {Route, Routes} from 'react-router-dom';
 import './App.css';
 import AddressPage from './components/address/AddressPage';
 import CityPage from './components/city/CityPage';
-import Person from './components/person/PersonInterface';
-import PersonList from './components/person/PersonList';
+import PersonPage from './components/person/PersonPage';
 import Header from './routes/Header';
 
 dayjs.locale('de-ch');
@@ -22,8 +21,8 @@ function App() {
             <Route path={'city'} element={<CityPage />} />
             <Route path={'address'} element={<AddressPage />} />
             <Route path={'address-list'} element={<AddressPage />} />
-            <Route path={'person'} element={<Person />} />
-            <Route path={'person-list'} element={<PersonList />} />
+            <Route path={'person'} element={<PersonPage />} />
+            <Route path={'person/:id'} element={<PersonPage />} />
           </Route>
         </Routes>
       </ConfigProvider>

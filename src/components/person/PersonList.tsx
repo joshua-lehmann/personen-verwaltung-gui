@@ -1,56 +1,80 @@
-import {Table} from 'antd';
+import {Button, notification, Table} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import React, {useEffect, useState} from 'react';
-import {PersonInterface} from './PersonInterface';
+import React from 'react';
+import {Link} from 'react-router-dom';
+import {IPerson} from './PersonInterface';
 
-interface PersonListProps {}
-
-const columns: ColumnsType<PersonInterface> = [
-  {
-    title: 'Vorname',
-    dataIndex: 'firstName',
-    key: 'firstName',
-  },
-  {
-    title: 'Nachname',
-    dataIndex: 'lastName',
-    key: 'firstName',
-  },
-  {
-    title: 'Heimatort',
-    dataIndex: 'homeTown',
-    key: 'homeTown',
-  },
-  {
-    title: 'Geburtstag',
-    dataIndex: 'birthDate',
-    key: 'birthDate',
-    render: () => dayjs().format('DD.MM.YYYY'),
-  },
-];
-
-function PersonList(props: PersonListProps) {
-  const [people, setPeople] = useState();
-
-  useEffect(() => {
+interface PersonListProps {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  people: Array<IPerson>;
+}
+function PersonList({people, setLoading}: PersonListProps) {
+  const [notificationApi, contextHolder] = notification.useNotification();
+  const deletePerson = (person: IPerson) => {
     axios
-      .get('http://localhost:8080/people')
-      .then(({data}) => {
-        setPeople(data._embedded.people);
+      .delete(person.link)
+      .then(() => {
+        setLoading(true);
       })
-      .catch((error: any) => {
-        console.log(error);
+      .catch((error) => {
+        notificationApi.error({
+          message: 'Error when trying to delete',
+          description: error.response.data.cause.cause.message,
+          duration: 8,
+        });
       });
-  }, []);
+  };
 
+  const columns: ColumnsType<IPerson> = [
+    {
+      title: 'Vorname',
+      dataIndex: 'firstName',
+    },
+    {
+      title: 'Nachname',
+      dataIndex: 'lastName',
+    },
+    {
+      title: 'Heimatort',
+      dataIndex: 'homeTown',
+    },
+    {
+      title: 'Geburtstag',
+      dataIndex: 'birthDate',
+      render: () => dayjs().format('DD.MM.YYYY'),
+    },
+    {
+      title: 'Edit',
+      key: 'edit',
+      render: (text, record) => {
+        return (
+          <>
+            <Link to={`../person/${record.id}`}>Edit</Link>
+          </>
+        );
+      },
+    },
+    {
+      title: 'Delete',
+      key: 'delete',
+      render: (text, record) => {
+        return (
+          <>
+            <Button danger onClick={() => deletePerson(record)}>
+              Delete
+            </Button>
+          </>
+        );
+      },
+    },
+  ];
   return (
-    <>
-      <div>
-        <Table columns={columns} dataSource={people} />
-      </div>
-    </>
+    <div>
+      {contextHolder}
+      <Table columns={columns} dataSource={people} />
+    </div>
   );
 }
 
