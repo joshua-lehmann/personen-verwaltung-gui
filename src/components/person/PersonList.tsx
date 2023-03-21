@@ -10,6 +10,7 @@ interface PersonListProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   people: Array<IPerson>;
 }
+
 function PersonList({people, setLoading}: PersonListProps) {
   const [notificationApi, contextHolder] = notification.useNotification();
   const deletePerson = (person: IPerson) => {

@@ -8,6 +8,7 @@ const dateFormat = 'DD.MM.YYYY';
 interface PersonProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 function Person({setLoading}: PersonProps) {
   const savePerson = (values: IPerson) => {
     axios

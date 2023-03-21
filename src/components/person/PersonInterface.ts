@@ -9,7 +9,7 @@ export interface PersonForm {
 
 export interface IPerson {
   id: number;
-  name: string;
+  lastName: string;
   firstName: string;
   birthDate: Date;
   homeTown: string;

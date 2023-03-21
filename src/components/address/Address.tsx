@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import './address.css';
 import {IAddressForm} from './AddressInterface';
+import {IPerson} from '../person/PersonInterface';
 
 interface City {
   id: string;
@@ -19,6 +20,12 @@ interface CityOption {
   cityName: string;
 }
 
+interface PersonOption {
+  value: number;
+  label: string;
+  link: string;
+}
+
 const dateFormat = 'DD.MM.YYYY';
 
 interface AddressProps {
@@ -28,6 +35,7 @@ interface AddressProps {
 function Address({setLoading}: AddressProps) {
   const [city, setCity] = useState<City>();
   const [cityOptions, setCityOptions] = useState<Array<CityOption>>();
+  const [peopleOptions, setPeopleOptions] = useState<Array<PersonOption>>();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -49,6 +57,18 @@ function Address({setLoading}: AddressProps) {
       .catch((error) => {
         console.log(error);
       });
+    axios.get('http://localhost:8080/people').then(({data}) => {
+      const people: Array<IPerson> = data._embedded.people;
+      setPeopleOptions(
+        people.map((person: any) => {
+          return {
+            value: person['_links'].self.href,
+            label: person.firstName + ' ' + person.lastName,
+            link: person['_links'].self.href,
+          };
+        })
+      );
+    });
   }, []);
 
   const saveAddress = (values: any) => {
@@ -121,7 +141,7 @@ function Address({setLoading}: AddressProps) {
               </Form.Item>
             </Col>
             <Col span={10} offset={2}>
-              <Form.Item name={'validTo'} label={'Gütlig bis'} rules={[{required: true}]}>
+              <Form.Item name={'validTo'} label={'Gültig bis'} rules={[{required: true}]}>
                 <DatePicker format={dateFormat} />
               </Form.Item>
             </Col>
@@ -135,6 +155,11 @@ function Address({setLoading}: AddressProps) {
                 className={'switch'}
               >
                 <Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} />
+              </Form.Item>
+            </Col>
+            <Col span={10} offset={2}>
+              <Form.Item name={'person'} label={'Person'} rules={[{required: true}]}>
+                <Select style={{width: '100%'}} options={peopleOptions} showSearch={true} />
               </Form.Item>
             </Col>
           </Row>

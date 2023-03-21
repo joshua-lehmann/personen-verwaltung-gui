@@ -1,4 +1,4 @@
-import {ContactsOutlined, HomeOutlined, TeamOutlined, UserOutlined} from '@ant-design/icons';
+import {ContactsOutlined, HomeOutlined, UserOutlined} from '@ant-design/icons';
 import {Menu, MenuProps} from 'antd';
 import React from 'react';
 import {Link, Outlet} from 'react-router-dom';
@@ -19,11 +19,6 @@ const items: MenuProps['items'] = [
     key: 'person',
     icon: <UserOutlined />,
     label: <Link to={'/person'}>Person</Link>,
-  },
-  {
-    key: 'person-list',
-    icon: <TeamOutlined />,
-    label: <Link to={'/person-list'}>Person List</Link>,
   },
 ];
 export default function Header() {
